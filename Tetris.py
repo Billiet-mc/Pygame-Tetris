@@ -933,29 +933,29 @@ while True:
                 game.resetGame()
 
 
-
-        if event.type == MOVEBLOCKS and not game.activeTetromino.lockDownState:
-            game.moveTetromino('down')
-            #level 19 is the last speed increase and is supposed to move the tetromino every 0.8 milliseconds which isnt possible so just move twice every MOVEBLOCKS event called at level 18 speed
-            if game.level >= 19 and game.validDownMovementCheck():
+        if game.gameState:
+            if event.type == MOVEBLOCKS and not game.activeTetromino.lockDownState:
                 game.moveTetromino('down')
+                #level 19 is the last speed increase and is supposed to move the tetromino every 0.8 milliseconds which isnt possible so just move twice every MOVEBLOCKS event called at level 18 speed
+                if game.level >= 19 and game.validDownMovementCheck():
+                    game.moveTetromino('down')
 
-        if event.type == FASTMOVEBLOCKS and keys[pg.K_DOWN]:
-            if not game.activeTetromino.lockDownState:
-                game.moveTetromino('down')
-                game.addScore(1)
+            if event.type == FASTMOVEBLOCKS and keys[pg.K_DOWN]:
+                if not game.activeTetromino.lockDownState:
+                    game.moveTetromino('down')
+                    game.addScore(1)
 
-        if event.type == LOCKDOWNTIMER:
-            game.moveTetromino('down', lockdown=True)
+            if event.type == LOCKDOWNTIMER:
+                game.moveTetromino('down', lockdown=True)
 
-        if event.type == DELAYEDAUTOSHIFT:
-            game.moveTetromino(latestPressed)
-            game.createGhostTetromino()
-            pg.time.set_timer(AUTOREPEATRATE, 33)
-            pg.time.set_timer(DELAYEDAUTOSHIFT, 0)
+            if event.type == DELAYEDAUTOSHIFT:
+                game.moveTetromino(latestPressed)
+                game.createGhostTetromino()
+                pg.time.set_timer(AUTOREPEATRATE, 33)
+                pg.time.set_timer(DELAYEDAUTOSHIFT, 0)
 
-        if event.type == AUTOREPEATRATE:
-            game.moveTetromino(latestPressed)
-            game.createGhostTetromino()
+            if event.type == AUTOREPEATRATE:
+                game.moveTetromino(latestPressed)
+                game.createGhostTetromino()
         
     game.updateScreen()
